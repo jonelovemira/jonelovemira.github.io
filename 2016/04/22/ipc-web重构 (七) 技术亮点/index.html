@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" >
+  <title>ipc-web重构 (七) 技术亮点 | 标题</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="在重构时会遇到各种需求，这就使得我去思考一些比较好的解决方法。于是在解决问题的过程中出现了一些亮点。有一部分的理念是来源于后台的MVC框架，java的springMVC。
+方法执行链单一职责是设计原则中的一个简单而重要的原则。通常一个方法只为了完成一个简单的业务。举个例子来说，对超链接的a节点点击事件之后的业务逻辑应该只有跳转页面。但是在上一章提到的一个场景：有可能这个跳转操作是一个非法操作，不应">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ipc-web重构 (七) 技术亮点">
+<meta property="og:url" content="http://yoursite.com/2016/04/22/ipc-web重构 (七) 技术亮点/index.html">
+<meta property="og:site_name" content="标题">
+<meta property="og:description" content="在重构时会遇到各种需求，这就使得我去思考一些比较好的解决方法。于是在解决问题的过程中出现了一些亮点。有一部分的理念是来源于后台的MVC框架，java的springMVC。
+方法执行链单一职责是设计原则中的一个简单而重要的原则。通常一个方法只为了完成一个简单的业务。举个例子来说，对超链接的a节点点击事件之后的业务逻辑应该只有跳转页面。但是在上一章提到的一个场景：有可能这个跳转操作是一个非法操作，不应">
+<meta property="og:image" content="http://yoursite.com/images/rtmp-process-flow.png">
+<meta property="og:image" content="http://yoursite.com/images/flash-flow-retry.png">
+<meta property="og:image" content="http://yoursite.com/images/state-change.png">
+<meta property="og:updated_time" content="2016-05-11T09:56:25.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="ipc-web重构 (七) 技术亮点">
+<meta name="twitter:description" content="在重构时会遇到各种需求，这就使得我去思考一些比较好的解决方法。于是在解决问题的过程中出现了一些亮点。有一部分的理念是来源于后台的MVC框架，java的springMVC。
+方法执行链单一职责是设计原则中的一个简单而重要的原则。通常一个方法只为了完成一个简单的业务。举个例子来说，对超链接的a节点点击事件之后的业务逻辑应该只有跳转页面。但是在上一章提到的一个场景：有可能这个跳转操作是一个非法操作，不应">
+<meta name="twitter:image" content="http://yoursite.com/images/rtmp-process-flow.png">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			
+			<img lazy-src="http://www.weixinqz.com/uploadfile/2014/1211/20141211051701675.jpg" class="js-avatar">
+			
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/">Jone Xu</a></h1>
+		</hgroup>
+
+		
+		<p class="header-subtitle">副标题</p>
+		
+
+		
+			<div class="switch-btn">
+				<div class="icon">
+					<div class="icon-ctn">
+						<div class="icon-wrap icon-house" data-idx="0">
+							<div class="birdhouse"></div>
+							<div class="birdhouse_holes"></div>
+						</div>
+						<div class="icon-wrap icon-ribbon hide" data-idx="1">
+							<div class="ribbon"></div>
+						</div>
+						
+						<div class="icon-wrap icon-link hide" data-idx="2">
+							<div class="loopback_l"></div>
+							<div class="loopback_r"></div>
+						</div>
+						
+						
+						<div class="icon-wrap icon-me hide" data-idx="3">
+							<div class="user"></div>
+							<div class="shoulder"></div>
+						</div>
+						
+					</div>
+					
+				</div>
+				<div class="tips-box hide">
+					<div class="tips-arrow"></div>
+					<ul class="tips-inner">
+						<li>Menu</li>
+						<li>Tags</li>
+						
+						<li>Links</li>
+						
+						
+						<li>Über</li>
+						
+					</ul>
+				</div>
+			</div>
+		
+
+		<div class="switch-area">
+			<div class="switch-wrap">
+				<section class="switch-part switch-part1">
+					<nav class="header-menu">
+						<ul>
+						
+							<li><a href="/">主页</a></li>
+				        
+							<li><a href="/archives">所有文章</a></li>
+				        
+						</ul>
+					</nav>
+					<nav class="header-nav">
+						<div class="social">
+							
+								<a class="github" target="_blank" href="#" title="github">github</a>
+					        
+								<a class="mail" target="_blank" href="#" title="mail">mail</a>
+					        
+								<a class="facebook" target="_blank" href="#" title="facebook">facebook</a>
+					        
+								<a class="twitter" target="_blank" href="#" title="twitter">twitter</a>
+					        
+						</div>
+					</nav>
+				</section>
+				
+				
+				<section class="switch-part switch-part2">
+					<div class="widget tagcloud" id="js-tagcloud">
+						<a href="/tags/ipc-web/" style="font-size: 10px;">ipc-web</a> <a href="/tags/front-end/" style="font-size: 10px;">前端</a> <a href="/tags/refactor/" style="font-size: 10px;">重构</a>
+					</div>
+				</section>
+				
+				
+				
+				<section class="switch-part switch-part3">
+					<div id="js-friends">
+					
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://localhost:4000/">奥巴马的博客</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://localhost:4000/">卡卡的美丽传说</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://localhost:4000/">本泽马的博客</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://localhost:4000/">吉格斯的博客</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://localhost:4000/">习大大大不同</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://localhost:4000/">托蒂的博客</a>
+			        
+			        </div>
+				</section>
+				
+
+				
+				
+				<section class="switch-part switch-part4">
+				
+					<div id="js-aboutme">我是谁，我从哪里来，我到哪里去？我就是我，是颜色不一样的吃货…</div>
+				</section>
+				
+			</div>
+		</div>
+	</header>				
+</div>
+
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"></div>
+  		<h1 class="header-author js-mobile-header hide">Jone Xu</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+			
+				<img lazy-src="http://www.weixinqz.com/uploadfile/2014/1211/20141211051701675.jpg" class="js-avatar">
+			
+			</div>
+			<hgroup>
+			  <h1 class="header-author">Jone Xu</h1>
+			</hgroup>
+			
+			<p class="header-subtitle">副标题</p>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/archives">所有文章</a></li>
+		        
+		        <div class="clearfix"></div>
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+						<a class="github" target="_blank" href="#" title="github">github</a>
+			        
+						<a class="mail" target="_blank" href="#" title="mail">mail</a>
+			        
+						<a class="facebook" target="_blank" href="#" title="facebook">facebook</a>
+			        
+						<a class="twitter" target="_blank" href="#" title="twitter">twitter</a>
+			        
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+
+      <div class="body-wrap"><article id="post-ipc-web重构 (七) 技术亮点" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/04/22/ipc-web重构 (七) 技术亮点/" class="article-date">
+  	<time datetime="2016-04-22T08:18:39.000Z" itemprop="datePublished">2016-04-22</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      ipc-web重构 (七) 技术亮点
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ipc-web/">ipc-web</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/front-end/">前端</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/refactor/">重构</a></li></ul>
+	</div>
+
+        
+	<div class="article-category tagcloud">
+	<a class="article-category-link" href="/categories/javascript/">javascript</a>
+	</div>
+
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><br>在重构时会遇到各种需求，这就使得我去思考一些比较好的解决方法。于是在解决问题的过程中出现了一些亮点。有一部分的理念是来源于后台的MVC框架，java的springMVC。</p>
+<h4 id="方法执行链"><a href="#方法执行链" class="headerlink" title="方法执行链"></a>方法执行链</h4><p>单一职责是设计原则中的一个简单而重要的原则。通常一个方法只为了完成一个简单的业务。举个例子来说，对超链接的a节点点击事件之后的业务逻辑应该只有跳转页面。但是在上一章提到的一个场景：有可能这个跳转操作是一个非法操作，不应该被执行。那么通常的做法是在这个跳转的逻辑中加一个判断，如果本操作合法则跳转，非法则不跳转:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">sample</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="comment">// business logic</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>变成</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">sample</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> r = confirm(<span class="string">"Are you sure?"</span>);</span><br><span class="line">    <span class="keyword">if</span>(r) &#123;</span><br><span class="line">        <span class="comment">// business logic</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这样做不符合单一职责，在sample中做了两个业务逻辑，也不符合开放-关闭原则：例如在合法和非法的判断条件变化时需要进入代码进行更改。</p>
+<p>一个好的解决方法是利用面向切面的概念形成一个方法执行链。我们将跳转逻辑的方法作为一个切面点，切面点之前的操作方法A、切面点B、切面点之后的操作方法C形成一个方法执行链，A成功之后执行B，B成功之后执行C。如果其中一个失败则后续的操作不执行。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">sample</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="comment">// business logic</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>变成：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">sample</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="comment">// business logic</span></span><br><span class="line">&#125;</span><br><span class="line">sample = (sample || <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;&#125;).before(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> confirm(<span class="string">"Are you sure?"</span>);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>其中切面before和after的代码如下：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">Function</span>.prototype.before = <span class="function"><span class="keyword">function</span>(<span class="params">func</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">var</span> _self = <span class="keyword">this</span>;</span><br><span class="line">        <span class="keyword">return</span> <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">            <span class="keyword">if</span> (func.apply(<span class="keyword">this</span>, <span class="built_in">arguments</span>) === <span class="literal">false</span>) &#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">            &#125;;</span><br><span class="line">            <span class="keyword">return</span> _self.apply(<span class="keyword">this</span>, <span class="built_in">arguments</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">Function</span>.prototype.after = <span class="function"><span class="keyword">function</span>(<span class="params">func</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">var</span> _self = <span class="keyword">this</span>;</span><br><span class="line">        <span class="keyword">return</span> <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">            <span class="keyword">var</span> ret = _self.apply(<span class="keyword">this</span>, <span class="built_in">arguments</span>);</span><br><span class="line">            <span class="keyword">if</span> (ret === <span class="literal">false</span>) &#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">            &#125;;</span><br><span class="line">            func.apply(<span class="keyword">this</span>, <span class="built_in">arguments</span>);</span><br><span class="line">            <span class="keyword">return</span> ret;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;;</span><br><span class="line">&#125;)();</span><br></pre></td></tr></table></figure></p>
+<h4 id="Js中的协程"><a href="#Js中的协程" class="headerlink" title="Js中的协程"></a>Js中的协程</h4><p>协程的概念是将函数或者方法暂停在一个点(yield)，然后下次调用的时候继续从暂停点执行。举例：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span>* <span class="title">foo</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="keyword">var</span> index = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">while</span> (index &lt;= <span class="number">2</span>)</span><br><span class="line">        <span class="keyword">yield</span> index++;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>上述代码定义了一个协程方法，定义完成之后可以通过迭代器方式使用：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> iterator = foo();</span><br><span class="line"><span class="built_in">console</span>.log(iterator.next()); <span class="comment">// &#123; value: 0, done: false &#125;</span></span><br><span class="line"><span class="built_in">console</span>.log(iterator.next()); <span class="comment">// &#123; value: 1, done: false &#125;</span></span><br><span class="line"><span class="built_in">console</span>.log(iterator.next()); <span class="comment">// &#123; value: 2, done: false &#125;</span></span><br><span class="line"><span class="built_in">console</span>.log(iterator.next()); <span class="comment">// &#123; value: undefined, done: true &#125;</span></span><br></pre></td></tr></table></figure>
+<p>有了协程之后，异步的代码就可以用同步的方式写了：</p>
+<h4 id="流程设计"><a href="#流程设计" class="headerlink" title="流程设计"></a>流程设计</h4><p>在flash直播方案中，从用户开启观看，到音视频到达用户浏览器端有一个比较复杂的请求流程，如图：</p>
+<p><img src="images/rtmp-process-flow.png" alt="rtmp process flow"></p>
+<p>该流程中详细描述了两个处理流。</p>
+<ul>
+<li><p>开启RTMP直播流<br>1 WEB前端发起requestUrl请求,获取relay地址。<br>2 WEB前端发起requestRelayService请求，app-server(devs-server)启动设备中relayd进程。<br>3 Device返回elbcookie至app-server(devs-server)。<br>4 WEB前端发起isRelayRelay请求，获得设备连接的Relay服务的AWS elbcookie。<br>5 Device开始POST多路或单路流至relay；Web前端通过web后台中转发送getrtmp请求至relay，轮训获得A/V的resourceid。<br>6 Relay获取流成功后生成resourceid，并通知librtmp。<br>7 Librtmp获取通知后，向relay发送get请求获取流。<br>8 Librtmp publish流至red5。<br>9 Web前端尝试RTMP连接，成功后即播放直播流。</p>
+</li>
+<li><p>关闭直播流<br>1) Web前端将rtmp流状态置为stop。<br>2) Red5计数将客户端数目减一。<br>3) Red5捕捉client数目为0的事件，停止librtmp的publish。<br>4) Librtmp捕捉publish被停止事件停止向relay发送get请求。<br>5) Relay监听设备POST超时事件，停止响应设备的POST请求。</p>
+</li>
+</ul>
+<p>前端处于应用顶端，受网络因素影响较大，请求超时比较常见，同时因为上述交互流程较为复杂，一步错则步步错，所以健壮的超时及错误回调策略比较重要。前端针对超时及错误的重试如下图：</p>
+<p><img src="images/flash-flow-retry.png" alt="flash-flow-retry"></p>
+<ol>
+<li>针对requestUrl和requestRelayService如果未取回正确结果(包括xhr超时，网络错误等)，会重新发送该请求最多3次。</li>
+<li>IsRelayReady请求轮训每1秒一次，总共6s之内未取回正确结果则重新从requestRelayService开始尝试，此类型重试限制为3次。</li>
+<li>RTMPOPERATE请求轮训每3秒一次，9秒内未正确取回结果，则重新从requestRelayService开始尝试，此类型重试限制为3次。</li>
+<li>在请求的过程中出现1.请求流中出现异常(已完成小循环重试，内部循环重试)，2.视频播放中出现异常(异常complete，网络错误，publish中断等)，均会进行大循环重试。</li>
+<li>网页视频播放器直播视频，中途出现网络错误，异常终止时，页面显示网络错误提示。</li>
+</ol>
+<h4 id="状态机"><a href="#状态机" class="headerlink" title="状态机"></a>状态机</h4><p>这些设计具体到代码上就是前端实现了一个状态迁移机。状态通过某个方法进行状态迁移，具体的状态迁移如图：</p>
+<p><img src="images/state-change.png" alt="state-change"></p>
+<p>其中白色背景的长方形表示状态，灰色背景长方形表示方法。实线表示成功时迁移方向，虚线代表错误发生时的迁移方向。</p>
+
+      
+    </div>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2016/04/25/ipc-web重构 (八) 重构后/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption"><</strong>
+      <div class="article-nav-title">
+        
+          ipc-web重构 (八) 重构后
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2016/04/22/ipc-web重构 (六) 基础组件建设/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">ipc-web重构 (六) 基础组件建设</div>
+      <strong class="article-nav-caption">></strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+
+
+
+
+
+
+</div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+    	<div class="footer-left">
+    		&copy; 2016 Jone Xu
+    	</div>
+      	<div class="footer-right">
+      		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
+      	</div>
+    </div>
+  </div>
+</footer>
+    </div>
+    
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+
+<script>
+	var yiliaConfig = {
+		fancybox: true,
+		mathjax: true,
+		animate: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: false
+	}
+</script>
+<script src="http://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
+<script src="/js/main.js"></script>
+
+
+
+
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  </div>
+</body>
+</html>

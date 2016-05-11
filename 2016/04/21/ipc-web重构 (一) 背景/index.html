@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" >
+  <title>ipc-web重构 (一) 背景 | 标题</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="随着网络的普及，以及终端硬件性能和带宽的提升，物联网的智能设备得以普及。IPCAMERA就是我司物联网智能设备的先驱者，早在13年就开始进行设计和研发，14年正式上线。
+IpcwebIpcweb是指为产品IPCAMERA开发维护的提供云服务的ipc云中的门户网站，是一个web服务器，正式版访问地址在此。它的业务范围如下:
+
+可以让用户在登陆后对接入互联网的设备进行远程监控和操作。
+提供给用户设置用">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ipc-web重构 (一) 背景">
+<meta property="og:url" content="http://yoursite.com/2016/04/21/ipc-web重构 (一) 背景/index.html">
+<meta property="og:site_name" content="标题">
+<meta property="og:description" content="随着网络的普及，以及终端硬件性能和带宽的提升，物联网的智能设备得以普及。IPCAMERA就是我司物联网智能设备的先驱者，早在13年就开始进行设计和研发，14年正式上线。
+IpcwebIpcweb是指为产品IPCAMERA开发维护的提供云服务的ipc云中的门户网站，是一个web服务器，正式版访问地址在此。它的业务范围如下:
+
+可以让用户在登陆后对接入互联网的设备进行远程监控和操作。
+提供给用户设置用">
+<meta property="og:updated_time" content="2016-05-11T09:52:51.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="ipc-web重构 (一) 背景">
+<meta name="twitter:description" content="随着网络的普及，以及终端硬件性能和带宽的提升，物联网的智能设备得以普及。IPCAMERA就是我司物联网智能设备的先驱者，早在13年就开始进行设计和研发，14年正式上线。
+IpcwebIpcweb是指为产品IPCAMERA开发维护的提供云服务的ipc云中的门户网站，是一个web服务器，正式版访问地址在此。它的业务范围如下:
+
+可以让用户在登陆后对接入互联网的设备进行远程监控和操作。
+提供给用户设置用">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			
+			<img lazy-src="http://www.weixinqz.com/uploadfile/2014/1211/20141211051701675.jpg" class="js-avatar">
+			
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/">Jone Xu</a></h1>
+		</hgroup>
+
+		
+		<p class="header-subtitle">副标题</p>
+		
+
+		
+			<div class="switch-btn">
+				<div class="icon">
+					<div class="icon-ctn">
+						<div class="icon-wrap icon-house" data-idx="0">
+							<div class="birdhouse"></div>
+							<div class="birdhouse_holes"></div>
+						</div>
+						<div class="icon-wrap icon-ribbon hide" data-idx="1">
+							<div class="ribbon"></div>
+						</div>
+						
+						<div class="icon-wrap icon-link hide" data-idx="2">
+							<div class="loopback_l"></div>
+							<div class="loopback_r"></div>
+						</div>
+						
+						
+						<div class="icon-wrap icon-me hide" data-idx="3">
+							<div class="user"></div>
+							<div class="shoulder"></div>
+						</div>
+						
+					</div>
+					
+				</div>
+				<div class="tips-box hide">
+					<div class="tips-arrow"></div>
+					<ul class="tips-inner">
+						<li>Menu</li>
+						<li>Tags</li>
+						
+						<li>Links</li>
+						
+						
+						<li>Über</li>
+						
+					</ul>
+				</div>
+			</div>
+		
+
+		<div class="switch-area">
+			<div class="switch-wrap">
+				<section class="switch-part switch-part1">
+					<nav class="header-menu">
+						<ul>
+						
+							<li><a href="/">主页</a></li>
+				        
+							<li><a href="/archives">所有文章</a></li>
+				        
+						</ul>
+					</nav>
+					<nav class="header-nav">
+						<div class="social">
+							
+								<a class="github" target="_blank" href="#" title="github">github</a>
+					        
+								<a class="mail" target="_blank" href="#" title="mail">mail</a>
+					        
+								<a class="facebook" target="_blank" href="#" title="facebook">facebook</a>
+					        
+								<a class="twitter" target="_blank" href="#" title="twitter">twitter</a>
+					        
+						</div>
+					</nav>
+				</section>
+				
+				
+				<section class="switch-part switch-part2">
+					<div class="widget tagcloud" id="js-tagcloud">
+						<a href="/tags/ipc-web/" style="font-size: 10px;">ipc-web</a> <a href="/tags/front-end/" style="font-size: 10px;">前端</a> <a href="/tags/refactor/" style="font-size: 10px;">重构</a>
+					</div>
+				</section>
+				
+				
+				
+				<section class="switch-part switch-part3">
+					<div id="js-friends">
+					
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://localhost:4000/">奥巴马的博客</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://localhost:4000/">卡卡的美丽传说</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://localhost:4000/">本泽马的博客</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://localhost:4000/">吉格斯的博客</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://localhost:4000/">习大大大不同</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://localhost:4000/">托蒂的博客</a>
+			        
+			        </div>
+				</section>
+				
+
+				
+				
+				<section class="switch-part switch-part4">
+				
+					<div id="js-aboutme">我是谁，我从哪里来，我到哪里去？我就是我，是颜色不一样的吃货…</div>
+				</section>
+				
+			</div>
+		</div>
+	</header>				
+</div>
+
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"></div>
+  		<h1 class="header-author js-mobile-header hide">Jone Xu</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+			
+				<img lazy-src="http://www.weixinqz.com/uploadfile/2014/1211/20141211051701675.jpg" class="js-avatar">
+			
+			</div>
+			<hgroup>
+			  <h1 class="header-author">Jone Xu</h1>
+			</hgroup>
+			
+			<p class="header-subtitle">副标题</p>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/archives">所有文章</a></li>
+		        
+		        <div class="clearfix"></div>
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+						<a class="github" target="_blank" href="#" title="github">github</a>
+			        
+						<a class="mail" target="_blank" href="#" title="mail">mail</a>
+			        
+						<a class="facebook" target="_blank" href="#" title="facebook">facebook</a>
+			        
+						<a class="twitter" target="_blank" href="#" title="twitter">twitter</a>
+			        
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+
+      <div class="body-wrap"><article id="post-ipc-web重构 (一) 背景" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/04/21/ipc-web重构 (一) 背景/" class="article-date">
+  	<time datetime="2016-04-21T02:02:41.000Z" itemprop="datePublished">2016-04-21</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      ipc-web重构 (一) 背景
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ipc-web/">ipc-web</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/front-end/">前端</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/refactor/">重构</a></li></ul>
+	</div>
+
+        
+	<div class="article-category tagcloud">
+	<a class="article-category-link" href="/categories/javascript/">javascript</a>
+	</div>
+
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><br>随着网络的普及，以及终端硬件性能和带宽的提升，物联网的智能设备得以普及。<em>IPCAMERA</em>就是我司物联网智能设备的先驱者，早在13年就开始进行设计和研发，14年正式上线。</p>
+<h4 id="Ipcweb"><a href="#Ipcweb" class="headerlink" title="Ipcweb"></a>Ipcweb</h4><p>Ipcweb是指为产品<em>IPCAMERA</em>开发维护的提供云服务的ipc云中的门户网站，是一个web服务器，正式版访问地址<a href="https://www.tplinkcloud.com" target="_blank" rel="external">在此</a>。它的业务范围如下:</p>
+<ul>
+<li>可以让用户在登陆后对接入互联网的设备进行远程监控和操作。</li>
+<li>提供给用户设置用户信息的入口。</li>
+<li>提供给用户获取最新信息和反馈意见的链接。</li>
+</ul>
+<p>本系列文档将结合背景，现状和方案，先进理念，设计原则等方面对ipcweb的前端的代码进行详细的介绍。</p>
+<p>在介绍Ipcweb时有必要介绍一下ipc云的更新历史。因为每次ipc云进行更新，都将导致ipcweb的需求变化，需求变化会导致设计思路的变化。</p>
+<h4 id="Ipc云的更新历史"><a href="#Ipc云的更新历史" class="headerlink" title="Ipc云的更新历史"></a>Ipc云的更新历史</h4><p>Ipcweb运行至今，已经正式发布了四个版本。针对ipc云的更迭，ipcweb也有许多需求变化:</p>
+<ol>
+<li>1.0.版本，此版本为第一个正式上线的版本。属于从0到1的开拓性里程碑，它界定了ipc云的能力范围，明确了ipc云的核心需求，奠定了ipc云优化迭代的基石。但由于迫切的成品输出的需求，架构设计的相对简单粗暴，业务代码统一维护，从而导致业务区分不清晰，耦合度程度高，不易拓展，也不能针对不同业务进行优化。ipcweb则界定了几乎所有业务范围内的需求。包括用户管理，设备管理，信息咨询等。</li>
+<li>2.0.版本，此版本在1.0.的基础上对架构进行优化，将业务区分变得更加合理，同时加入了自动化部署系统以及监控系统，有效的提高了业务的可用性。在我看来，这个版本的ipc云真正做到了人力资源最大化，不同业务模块协同合作，各自开发互不影响。事实上，本司的云平台基础云就是以此架构为基础进行开发与迭代的。ipcweb前端变化不大，主要变化在于后台，将之前的大杂烩服务器拆分出业务不同的服务器，而后续的web则主要作为web服务器，不再提供认证，数据持久化等业务。</li>
+<li>3.0.版本。版本更迭的主要起因是公司为整合和统一管理云资源，所以将云分为基础云和业务云。基础云负责物联网设备的基础业务，例如支持设备上线，数据持久化，认证等；业务云主要负责相关的产品的主要业务，例如ipc云主要负责<em>IPCAMERA</em>的业务直播和web。此版本中ipc云更改特别大，因为之前依赖的基础业务全部被替换，其中还包括一些数据一致性，跨域等问题均需要ipc云来做相应的兼容。</li>
+<li>3.1.版本。升级的主要原因是，在部分环境下，核心业务不可用，即在chrome42(42及以上)和edge浏览器不再支持已有的直播技术(利用NPAPI插件)。所以更新直播技术是此版本的主要需求。在这个版本中，ipcweb主要需求变化在于前端，针对不同的环境采用不同的直播技术。</li>
+</ol>
+<h4 id="为什么重构"><a href="#为什么重构" class="headerlink" title="为什么重构"></a>为什么重构</h4><p>在经历了几次迭代之后，本就不怎么健壮的ipcweb前端代码维护起来相当困难，拓展更是不易。这就暴露了前端代码的诸多缺点。</p>
+<ol>
+<li>纯面向过程编码。通常一个函数方法可以上几百行，这就导致复用性不强，维护起来还相当麻烦。拓展性更不用提。</li>
+<li>大量的全局变量。这就导致代码可控性非常低，细微的修改可能导致莫名其妙的问题。</li>
+<li>紧耦合的封装导致该封装等于0。一个弹窗类里面包含了主业务代码的全局变量，导致在其他的页面该弹窗类完全无法用。</li>
+<li>大量的冗余，废弃的代码。新人接手根本不知道这些代码是不是废弃代码，不敢修改，导致后续的代码只会是一直增加。</li>
+<li>前后端代码耦合。Php的代码耦合在前端代码中，针对切换后端解决方案相当不利。</li>
+<li>除此之外还有命名不规则，css，html代码混乱等。</li>
+</ol>
+<p>所以在此背景下，重构显得非常的必要，不仅是为了清理旧代码，换一种清晰干净的编写方式，还为了能够快速应对需求变化，易拓展易维护。所以重构势在必行。</p>
+
+      
+    </div>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2016/04/21/ipc-web重构 (二) 优化方向/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption"><</strong>
+      <div class="article-nav-title">
+        
+          ipc-web重构 (二) 优化方向
+        
+      </div>
+    </a>
+  
+  
+</nav>
+
+  
+</article>
+
+
+
+
+
+
+
+
+</div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+    	<div class="footer-left">
+    		&copy; 2016 Jone Xu
+    	</div>
+      	<div class="footer-right">
+      		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
+      	</div>
+    </div>
+  </div>
+</footer>
+    </div>
+    
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+
+<script>
+	var yiliaConfig = {
+		fancybox: true,
+		mathjax: true,
+		animate: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: false
+	}
+</script>
+<script src="http://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
+<script src="/js/main.js"></script>
+
+
+
+
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  </div>
+</body>
+</html>

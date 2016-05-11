@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" >
+  <title>ipc-web重构 (五) 构建工具 | 标题</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="介绍完前端重构的MVC框架之后有必要介绍一下，针对性能优化我们能够使用的一些离线工具。本项目采用的是FIS3。Fis3主要功能基本都是围绕着前端开发所需要的三种编译能力：资源定位、内容嵌入、依赖声明。如何使用这些能力，配置文件相当重要。我们可以在配置文件中：
+
+定义发布的规则，源文件路径可以与发布路径不一致。
+制定文件指纹，压缩资源等优化方式。
+配置不同版本的发布(build, alpha, be">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ipc-web重构 (五) 构建工具">
+<meta property="og:url" content="http://yoursite.com/2016/04/21/ipc-web重构 (五) 构建工具/index.html">
+<meta property="og:site_name" content="标题">
+<meta property="og:description" content="介绍完前端重构的MVC框架之后有必要介绍一下，针对性能优化我们能够使用的一些离线工具。本项目采用的是FIS3。Fis3主要功能基本都是围绕着前端开发所需要的三种编译能力：资源定位、内容嵌入、依赖声明。如何使用这些能力，配置文件相当重要。我们可以在配置文件中：
+
+定义发布的规则，源文件路径可以与发布路径不一致。
+制定文件指纹，压缩资源等优化方式。
+配置不同版本的发布(build, alpha, be">
+<meta property="og:updated_time" content="2016-05-11T09:55:28.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="ipc-web重构 (五) 构建工具">
+<meta name="twitter:description" content="介绍完前端重构的MVC框架之后有必要介绍一下，针对性能优化我们能够使用的一些离线工具。本项目采用的是FIS3。Fis3主要功能基本都是围绕着前端开发所需要的三种编译能力：资源定位、内容嵌入、依赖声明。如何使用这些能力，配置文件相当重要。我们可以在配置文件中：
+
+定义发布的规则，源文件路径可以与发布路径不一致。
+制定文件指纹，压缩资源等优化方式。
+配置不同版本的发布(build, alpha, be">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			
+			<img lazy-src="http://www.weixinqz.com/uploadfile/2014/1211/20141211051701675.jpg" class="js-avatar">
+			
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/">Jone Xu</a></h1>
+		</hgroup>
+
+		
+		<p class="header-subtitle">副标题</p>
+		
+
+		
+			<div class="switch-btn">
+				<div class="icon">
+					<div class="icon-ctn">
+						<div class="icon-wrap icon-house" data-idx="0">
+							<div class="birdhouse"></div>
+							<div class="birdhouse_holes"></div>
+						</div>
+						<div class="icon-wrap icon-ribbon hide" data-idx="1">
+							<div class="ribbon"></div>
+						</div>
+						
+						<div class="icon-wrap icon-link hide" data-idx="2">
+							<div class="loopback_l"></div>
+							<div class="loopback_r"></div>
+						</div>
+						
+						
+						<div class="icon-wrap icon-me hide" data-idx="3">
+							<div class="user"></div>
+							<div class="shoulder"></div>
+						</div>
+						
+					</div>
+					
+				</div>
+				<div class="tips-box hide">
+					<div class="tips-arrow"></div>
+					<ul class="tips-inner">
+						<li>Menu</li>
+						<li>Tags</li>
+						
+						<li>Links</li>
+						
+						
+						<li>Über</li>
+						
+					</ul>
+				</div>
+			</div>
+		
+
+		<div class="switch-area">
+			<div class="switch-wrap">
+				<section class="switch-part switch-part1">
+					<nav class="header-menu">
+						<ul>
+						
+							<li><a href="/">主页</a></li>
+				        
+							<li><a href="/archives">所有文章</a></li>
+				        
+						</ul>
+					</nav>
+					<nav class="header-nav">
+						<div class="social">
+							
+								<a class="github" target="_blank" href="#" title="github">github</a>
+					        
+								<a class="mail" target="_blank" href="#" title="mail">mail</a>
+					        
+								<a class="facebook" target="_blank" href="#" title="facebook">facebook</a>
+					        
+								<a class="twitter" target="_blank" href="#" title="twitter">twitter</a>
+					        
+						</div>
+					</nav>
+				</section>
+				
+				
+				<section class="switch-part switch-part2">
+					<div class="widget tagcloud" id="js-tagcloud">
+						<a href="/tags/ipc-web/" style="font-size: 10px;">ipc-web</a> <a href="/tags/front-end/" style="font-size: 10px;">前端</a> <a href="/tags/refactor/" style="font-size: 10px;">重构</a>
+					</div>
+				</section>
+				
+				
+				
+				<section class="switch-part switch-part3">
+					<div id="js-friends">
+					
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://localhost:4000/">奥巴马的博客</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://localhost:4000/">卡卡的美丽传说</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://localhost:4000/">本泽马的博客</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://localhost:4000/">吉格斯的博客</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://localhost:4000/">习大大大不同</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://localhost:4000/">托蒂的博客</a>
+			        
+			        </div>
+				</section>
+				
+
+				
+				
+				<section class="switch-part switch-part4">
+				
+					<div id="js-aboutme">我是谁，我从哪里来，我到哪里去？我就是我，是颜色不一样的吃货…</div>
+				</section>
+				
+			</div>
+		</div>
+	</header>				
+</div>
+
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"></div>
+  		<h1 class="header-author js-mobile-header hide">Jone Xu</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+			
+				<img lazy-src="http://www.weixinqz.com/uploadfile/2014/1211/20141211051701675.jpg" class="js-avatar">
+			
+			</div>
+			<hgroup>
+			  <h1 class="header-author">Jone Xu</h1>
+			</hgroup>
+			
+			<p class="header-subtitle">副标题</p>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/archives">所有文章</a></li>
+		        
+		        <div class="clearfix"></div>
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+						<a class="github" target="_blank" href="#" title="github">github</a>
+			        
+						<a class="mail" target="_blank" href="#" title="mail">mail</a>
+			        
+						<a class="facebook" target="_blank" href="#" title="facebook">facebook</a>
+			        
+						<a class="twitter" target="_blank" href="#" title="twitter">twitter</a>
+			        
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+
+      <div class="body-wrap"><article id="post-ipc-web重构 (五) 构建工具" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/04/21/ipc-web重构 (五) 构建工具/" class="article-date">
+  	<time datetime="2016-04-21T09:49:01.000Z" itemprop="datePublished">2016-04-21</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      ipc-web重构 (五) 构建工具
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ipc-web/">ipc-web</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/front-end/">前端</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/refactor/">重构</a></li></ul>
+	</div>
+
+        
+	<div class="article-category tagcloud">
+	<a class="article-category-link" href="/categories/javascript/">javascript</a>
+	</div>
+
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><br>介绍完前端重构的MVC框架之后有必要介绍一下，针对性能优化我们能够使用的一些离线工具。本项目采用的是<a href="http://fis.baidu.com/" target="_blank" rel="external">FIS3</a>。<br>Fis3主要功能基本都是围绕着前端开发所需要的三种编译能力：资源定位、内容嵌入、依赖声明。如何使用这些能力，配置文件相当重要。我们可以在配置文件中：</p>
+<ol>
+<li>定义发布的规则，源文件路径可以与发布路径不一致。</li>
+<li>制定文件指纹，压缩资源等优化方式。</li>
+<li>配置不同版本的发布(build, alpha, beta, product)。</li>
+<li>自定义插件，可以在发布的过程中实现特定的需求。</li>
+</ol>
+<p>在本项目中使用到了以下特性：</p>
+<ol>
+<li><p>文件指纹。文件指纹在缓存利用中相当有用。它的做法是在文件名中加入文件内容的一个hash值，这样如果内容改变，那么文件名称也会改变。那么发布时旧代码依赖的旧文件不会改变，新代码依赖的新文件，不会依赖旧文件。配置项如下:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">fis.media(<span class="string">'build'</span>).match(<span class="string">'*.&#123;js,css,png,ico&#125;'</span>, &#123;</span><br><span class="line">       useHash: <span class="literal">true</span></span><br><span class="line">   &#125;);</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>压缩优化等。可以对css，js进行精简化，可以对图片文件使用压缩工具进行压缩，配置如下：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">fis.media(<span class="string">'build'</span>).match(<span class="string">'*.js'</span>, &#123;</span><br><span class="line">    optimizer: fis.plugin(<span class="string">'uglify-js'</span>)</span><br><span class="line">&#125;)</span><br><span class="line">.match(<span class="string">'*.css'</span>, &#123;</span><br><span class="line">    optimizer: fis.plugin(<span class="string">'clean-css'</span>)</span><br><span class="line">&#125;)</span><br><span class="line">.match(<span class="string">'*.png'</span>, &#123;</span><br><span class="line">    optimizer: fis.plugin(<span class="string">'png-compressor'</span>)</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>定义发布不同的版本。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">fis.media(<span class="string">'alpha'</span>)</span><br><span class="line">   .match(<span class="string">'*.&#123;js,css,png,ico&#125;'</span>, &#123;</span><br><span class="line">       domain: ALPHA_CDN_PATH</span><br><span class="line">   &#125;)</span><br><span class="line">   .match(<span class="string">'*'</span>, &#123;</span><br><span class="line">       release: <span class="string">'/$0'</span></span><br><span class="line">   &#125;)</span><br><span class="line">   .match(<span class="string">'fis-conf.js'</span>, &#123;</span><br><span class="line">       release: <span class="literal">false</span></span><br><span class="line">   &#125;);</span><br><span class="line"></span><br><span class="line">fis.media(<span class="string">'beta'</span>)</span><br><span class="line">   .match(<span class="string">'*.&#123;js,css,png,ico&#125;'</span>, &#123;</span><br><span class="line">       domain: BETA_CDN_PATH</span><br><span class="line">   &#125;)</span><br><span class="line">   .match(<span class="string">'*'</span>, &#123;</span><br><span class="line">       release: <span class="string">'/$0'</span></span><br><span class="line">   &#125;)</span><br><span class="line">   .match(<span class="string">'fis-conf.js'</span>, &#123;</span><br><span class="line">       release: <span class="literal">false</span></span><br><span class="line">   &#125;);</span><br><span class="line"></span><br><span class="line">fis.media(<span class="string">'product'</span>)</span><br><span class="line">   .match(<span class="string">'*.&#123;js,css,png,ico&#125;'</span>, &#123;</span><br><span class="line">       domain: PRODUCT_CDN_PATH</span><br><span class="line">   &#125;)</span><br><span class="line">   .match(<span class="string">'*'</span>, &#123;</span><br><span class="line">       release: <span class="string">'/$0'</span></span><br><span class="line">   &#125;)</span><br><span class="line">   .match(<span class="string">'fis-conf.js'</span>, &#123;</span><br><span class="line">       release: <span class="literal">false</span></span><br><span class="line">   &#125;);</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>除此之外，依据需求在此基础上开发了两个插件：前端html代码的组件化，和实现a标签href属性以及img标签的data-url属性的资源定位的插件。</p>
+<h4 id="html代码的组件化。"><a href="#html代码的组件化。" class="headerlink" title="html代码的组件化。"></a>html代码的组件化。</h4><p>在开发的时候，总是会面对html代码中需要重复的使用header块和foot块。这样的重复代码不易维护，不便于管理，所以需要找到一个机制能够将这些公共部分抽离出来，等到发布的时候再补上公共部分。类似于jinja2(python)的模板继承。<br>例如a.html内容如下：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&#123;% extends "../../common/base.html" %&#125;</span><br><span class="line"></span><br><span class="line">&#123;% block title %&#125;</span><br><span class="line"><span class="tag">&lt;<span class="name">title</span> <span class="attr">lang</span>=<span class="string">"en"</span>&gt;</span>Admin<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">&#123;% endblock %&#125;</span><br></pre></td></tr></table></figure>
+<p>而基类模板内容如下：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">meta</span> <span class="attr">http-equiv</span>=<span class="string">"Content-Type"</span> <span class="attr">content</span>=<span class="string">"text/html; charset=utf-8"</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">"description"</span> <span class="attr">content</span>=<span class="string">"cloud tp-link"</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">meta</span> <span class="attr">http-equiv</span>=<span class="string">"X-UA-Compatible"</span> <span class="attr">content</span>=<span class="string">"IE=edge"</span> /&gt;</span></span><br><span class="line"></span><br><span class="line">&#123;% block title %&#125;</span><br><span class="line">&#123;% endblock %&#125;</span><br></pre></td></tr></table></figure>
+<p>那么extends出来a.html内容就变成：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">meta</span> <span class="attr">http-equiv</span>=<span class="string">"Content-Type"</span> <span class="attr">content</span>=<span class="string">"text/html; charset=utf-8"</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">"description"</span> <span class="attr">content</span>=<span class="string">"cloud tp-link"</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">meta</span> <span class="attr">http-equiv</span>=<span class="string">"X-UA-Compatible"</span> <span class="attr">content</span>=<span class="string">"IE=edge"</span> /&gt;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">title</span> <span class="attr">lang</span>=<span class="string">"en"</span>&gt;</span>Admin<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>核心代码templateInherit如下：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> templateInherit = <span class="function"><span class="keyword">function</span>(<span class="params">childFile, baseFile</span>) </span>&#123;</span><br><span class="line">    <span class="comment">// body...</span></span><br><span class="line">    <span class="keyword">var</span> childTagArr = getTagArrKeyValue(childFile);</span><br><span class="line">    <span class="keyword">var</span> baseTagArr = getTagArrKeyValue(baseFile);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> baseContent = baseFile.getContent();</span><br><span class="line">    <span class="keyword">var</span> childContent = childFile.getContent();</span><br><span class="line">    <span class="keyword">var</span> lastAddedLength = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">var</span> block <span class="keyword">in</span> baseTagArr[<span class="string">'block'</span>]) &#123;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; baseTagArr[<span class="string">'block'</span>][block].length; i++) &#123;</span><br><span class="line">            baseTagArr[<span class="string">'block'</span>][block][i] += lastAddedLength;</span><br><span class="line">        &#125;;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">var</span> preContent = baseContent.substring(<span class="number">0</span>, baseTagArr[<span class="string">'block'</span>][block][<span class="number">0</span>]);</span><br><span class="line">        <span class="keyword">var</span> lastContent = baseContent.substring(baseTagArr[<span class="string">'block'</span>][block][<span class="number">3</span>] + <span class="number">1</span>);</span><br><span class="line">        <span class="keyword">var</span> currentBaseBlockLength = baseTagArr[<span class="string">'block'</span>][block][<span class="number">3</span>] - </span><br><span class="line">            baseTagArr[<span class="string">'block'</span>][block][<span class="number">0</span>] + <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">var</span> addedContent;</span><br><span class="line">        <span class="keyword">if</span> (childTagArr[<span class="string">'block'</span>][block] != <span class="literal">undefined</span>) &#123;</span><br><span class="line">            addedContent = childContent.substring(childTagArr[<span class="string">'block'</span>][block][<span class="number">1</span>] + <span class="number">1</span>, </span><br><span class="line">                childTagArr[<span class="string">'block'</span>][block][<span class="number">2</span>]);</span><br><span class="line">            <span class="keyword">delete</span> childTagArr[<span class="string">'block'</span>][block];</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            addedContent = <span class="string">""</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// refresh offset when render child content to base content</span></span><br><span class="line">        lastAddedLength += addedContent.length - currentBaseBlockLength;</span><br><span class="line">        baseContent = preContent + addedContent + lastContent;</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">var</span> block <span class="keyword">in</span> childTagArr[<span class="string">'block'</span>]) &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="string">"child has some block which base doesn't have: "</span> + block + <span class="string">";"</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> baseContent;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>然后在fis编译期间注册我们写的插件：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">fis.config.set(<span class="string">'modules.postpackager'</span>, [myResourceLocate, templateInheritance]);</span><br></pre></td></tr></table></figure>
+<h4 id="特定属性的资源定位。"><a href="#特定属性的资源定位。" class="headerlink" title="特定属性的资源定位。"></a>特定属性的资源定位。</h4><p>在fis中定位资源的方式有限，可以在html的静态资源节点中定位，css和js中定位，但是特定条件的定位，例如要定位a标签的href属性，它是不支持的。但是我们可以手动写一个插件来定位html代码中我们需要的属性, 核心代码replaceResourceLocation如下：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> replaceResourceLocation = <span class="function"><span class="keyword">function</span>(<span class="params">fileSrc, file</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (file) &#123;</span><br><span class="line">        <span class="keyword">var</span> content = file.getContent();</span><br><span class="line">        <span class="keyword">var</span> fileDir = file.dirname;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">var</span> aHrefPattern = <span class="regexp">/(&lt;a.*?)href=(['"]?)([^'"\s?]+)((\?[^'"\s]*)?)\2([^&gt;]*&gt;)/ig</span>;</span><br><span class="line">        <span class="keyword">var</span> afterReplaceAHrefContent = content.replace(aHrefPattern, <span class="function"><span class="keyword">function</span>(<span class="params">all, prefix, quote, value, query, queryInner, postfix</span>) </span>&#123;</span><br><span class="line">            <span class="keyword">var</span> f = fis.uri(value, fileDir);</span><br><span class="line">            <span class="keyword">if</span> (f.file) &#123;</span><br><span class="line">                <span class="keyword">var</span> releasePath = fileSrc[<span class="string">"/"</span> + f.file.id].getHashRelease();</span><br><span class="line">                all = prefix + <span class="string">'href='</span> + quote + releasePath + query + quote + postfix;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">return</span> all;</span><br><span class="line">        &#125;);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">var</span> dateUrlPattern = <span class="regexp">/(&lt;img.*?)data-url=(['"]?)([^'"\s?]+)((\?[^'"\s]*)?)\2([^&gt;]*&gt;)/ig</span>;</span><br><span class="line">        <span class="keyword">var</span> dataUrlLocateContent = afterReplaceAHrefContent.replace(dateUrlPattern, <span class="function"><span class="keyword">function</span>(<span class="params">all, prefix, quote, value, query, queryInner, postfix</span>) </span>&#123;</span><br><span class="line">            <span class="keyword">var</span> f = fis.uri(value, fileDir);</span><br><span class="line">            <span class="keyword">if</span> (f.file) &#123;</span><br><span class="line">                <span class="keyword">var</span> releasePath = fileSrc[<span class="string">"/"</span> + f.file.id].getHashRelease();</span><br><span class="line">                all = prefix + <span class="string">'data-url='</span> + quote + releasePath + query + quote + postfix;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">return</span> all;</span><br><span class="line">        &#125;);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> dataUrlLocateContent;</span><br><span class="line">    &#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>注册插件代码请见上一节中html代码组件化的注册截图。</p>
+
+      
+    </div>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2016/04/22/ipc-web重构 (六) 基础组件建设/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption"><</strong>
+      <div class="article-nav-title">
+        
+          ipc-web重构 (六) 基础组件建设
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2016/04/21/ipc-web重构 (四) 我的MVC/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">ipc-web重构 (四) 我的MVC</div>
+      <strong class="article-nav-caption">></strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+
+
+
+
+
+
+</div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+    	<div class="footer-left">
+    		&copy; 2016 Jone Xu
+    	</div>
+      	<div class="footer-right">
+      		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
+      	</div>
+    </div>
+  </div>
+</footer>
+    </div>
+    
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+
+<script>
+	var yiliaConfig = {
+		fancybox: true,
+		mathjax: true,
+		animate: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: false
+	}
+</script>
+<script src="http://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
+<script src="/js/main.js"></script>
+
+
+
+
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  </div>
+</body>
+</html>
